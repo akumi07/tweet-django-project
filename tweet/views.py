@@ -43,3 +43,10 @@ def tweet_edit(request,tweet_id):
     #   instance =tweet mtlb ki form me prefill rhega data jisko edit krna hai or data tweet se aarha hai
       form=TweetForm(instance=tweet)
    return render(request,'tweet_form.html',{'form':form})
+
+def tweet_delete(request,tweet_id):
+    tweet=get_object_or_404(Tweet,pk=tweet_id,user=request.user)
+    if request.method=='POST':
+       tweet.delete()
+       return redirect('tweet_list')
+    return render(request,'tweet_confirm_delete.html',{'tweet':tweet})
