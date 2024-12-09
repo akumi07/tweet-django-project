@@ -14,7 +14,7 @@ def tweet_list(request):
 
 def tweet_create(request):
     if request.method=='POST':
-      form=TweetForm(request.POST,request.FILE)
+      form=TweetForm(request.POST,request.FILES)
       if form.is_valid():
         #  form ko save kiye commit false isliye hua hai db me save nhi kro
          tweet=form.save(commit=False)
