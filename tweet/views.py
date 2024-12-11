@@ -10,8 +10,13 @@ def index(request):
 
 
 def tweet_list(request):
-    tweets=Tweet.objects.all().order_by('-created_at')
-    return render(request,'tweet_list.html',{'tweets':tweets}) 
+    query = request.GET.get('q')  # Get the search query from the URL
+    if query:
+        tweets = Tweet.objects.filter(content__icontains=query).order_by('-created_at')  # Filter and order by created_at
+    else:
+        tweets = Tweet.objects.all().order_by('-created_at')  # Default: all tweets ordered by created_at
+    return render(request, 'tweet_list.html', {'tweets': tweets, 'query': query})
+
 
 @login_required
 def tweet_create(request):

@@ -1,30 +1,52 @@
 {% extends "layout.html" %}
-{% block title %} Tweet{% endblock %}
+{% block title %} Tweet {% endblock %}
 
 {% block content %}
 
-<h1 class='text-center text-white mt-4'>Welcome to the tweet page</h1>
+<h1 class="text-center text-white mt-4">Welcome to the Tweet Page</h1>
 
-<a class="btn btn-primary m-1" href="{% url 'tweet_create'%}">Create a tweet</a>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a class="btn btn-primary m-1" href="{% url 'tweet_create' %}">Create a Tweet</a>
+    {% comment %} <form class="d-flex" role="search" method="GET" action="{% url 'tweet_list' %}">
+        <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search tweets"
+            aria-label="Search"
+            name="q"
+            value="{{ request.GET.q }}"
+        >
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form> {% endcomment %}
+</div>
+
+{% if query %}
+    <h5 class="text-center text-info">Search Results for "{{ query }}"</h5>
+{% endif %}
 
 <div class="container row gap-3">
-
-    {% for tweet in tweets %}
-    <div class="card" style="width: 18rem;">
-        <img src="{{tweet.photo.url}}" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">{{tweet.user.username}}</h5>
-          <p class="card-text">{{tweet.content}}</p>
-          {% if tweet.user == user %}
-          <a href="{% url 'tweet_edit' tweet.id%}" class="btn btn-primary">Edit</a>
-          <a href="{%url 'tweet_delete' tweet.id%}" class="btn btn-danger">Delete</a>
-          
-
-          {% endif %}
+    {% if tweets %}
+        {% for tweet in tweets %}
+        <div class="card" style="width: 18rem;">
+            {% if tweet.photo %}
+                <img src="{{ tweet.photo.url }}" class="card-img-top" alt="Tweet photo">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ tweet.user.username }}</h5>
+                <p class="card-text">{{ tweet.content }}</p>
+                <small class="text-muted">Created at: {{ tweet.created_at }}</small>
+                {% if tweet.user == user %}
+                <div class="mt-2">
+                    <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary">Edit</a>
+                    <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
+                </div>
+                {% endif %}
+            </div>
         </div>
-      </div>
-    
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p class="text-center text-warning">No tweets found matching your search.</p>
+    {% endif %}
 </div>
 
 {% endblock %}
