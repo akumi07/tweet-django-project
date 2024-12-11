@@ -128,3 +128,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL='static/'
 STATIC_ROOT = [os.path.join(BASE_DIR, 'staticfiles')]
+# ye url hm dete hai django ko btane ke liye mujhe pta ki django kha bhej  rha hai
+LOGIN_URL='/accounts/login'
+
+LOGIN_REDIRECT_URL='/tweet/'
+LOGOUT_REDIRECT_URL='/tweet/'
+
